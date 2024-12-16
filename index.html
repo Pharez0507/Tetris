@@ -3,13 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thulane Sigasa | Tetris</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/animatelo@1.0.0/animatelo.min.js"></script>
+    <title>Tetris Game</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="container" id="game-container">
+        <div class="game-info">
+            <h1>Pharez Tetris</h1>
+            <div class="score-container">
+                <p>Score: <span id="score">0</span></p>
+                <p>Level: <span id="level">1</span></p>
+                <p>High Score: <span id="high-score">0</span></p>
+            </div>
+            <div class="button-container">
+                <button id="start-button">New Game</button>
+                <button id="pause-button">Pause</button>
+                <button id="theme-button">Switch Theme</button>
+            </div>
+            <div class="controls pc-controls">
+                <p>PC Controls:</p>
+                <p>← → : Move</p>
+                <p>↑ : Rotate</p>
+                <p>↓ : Drop</p>
+                <p>Space : Hard Drop</p>
+            </div>
+        </div>
+        <canvas id="tetris" width="240" height="400"></canvas>
+        <div class="right-panel">
+            <div class="next-piece">
+                <h2>Next:</h2>
+                <canvas id="next" width="100" height="100"></canvas>
+            </div>
+            <div class="controls mobile-controls">
+                <p>Touch Controls:</p>
+                <p>Swipe Left/Right: Move</p>
+                <p>Tap: Rotate</p>
+                <p>Swipe Down: Soft Drop</p>
+                <p>Double Tap: Hard Drop</p>
+            </div>
+        </div>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>

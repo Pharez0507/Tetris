@@ -1,0 +1,222 @@
+:root {
+    /* Dark theme (default) */
+    --bg-color: #1a1a1a;
+    --container-bg: #2a2a2a;
+    --text-color: white;
+    --accent-color: #00ff00;
+    --button-bg: #00ff00;
+    --button-hover: #00cc00;
+    --button-text: #000;
+    --canvas-border: #00ff00;
+    --panel-bg: #333;
+}
+
+[data-theme="light"] {
+    --bg-color: #f0f0f0;
+    --container-bg: #ffffff;
+    --text-color: #333;
+    --accent-color: #2196F3;
+    --button-bg: #2196F3;
+    --button-hover: #1976D2;
+    --button-text: #fff;
+    --canvas-border: #2196F3;
+    --panel-bg: #e0e0e0;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    transition: background-color 0.3s;
+}
+
+.container {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    background-color: var(--container-bg);
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.game-info {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+}
+
+.score-container {
+    margin: 20px 0;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: var(--button-hover);
+}
+
+#tetris {
+    border: 2px solid var(--canvas-border);
+    background-color: #000;
+}
+
+.next-piece {
+    background-color: var(--panel-bg);
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.right-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.controls {
+    text-align: left;
+    background-color: var(--panel-bg);
+    padding: 15px;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+.mobile-controls {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+        width: 100%;
+        max-width: 500px;
+    }
+    
+    .pc-controls {
+        display: none;
+    }
+
+    .mobile-controls {
+        display: block;
+        margin-top: 20px;
+    }
+    
+    #tetris {
+        width: 100%;
+        max-width: 300px;
+        height: auto;
+        touch-action: none; /* Prevent browser default touch actions */
+    }
+    
+    .right-panel {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+    .next-piece {
+        margin-bottom: 20px;
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    .mobile-controls {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+
+@keyframes levelUpAnimation {
+    0% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+    }
+    20% {
+        transform: translate(-50%, -50%) scale(1.2);
+        opacity: 1;
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+    80% {
+        transform: translate(-50%, -50%) scale(1.1);
+        opacity: 0.8;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(2);
+        opacity: 0;
+    }
+}
+
+@keyframes sparkle {
+    0% {
+        transform: scale(0) rotate(0deg);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1) rotate(180deg);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+.level-up-notification {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(45deg, #ff0000, #ff8800, #ffff00);
+    color: white;
+    padding: 20px 40px;
+    border-radius: 10px;
+    font-size: 32px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    animation: levelUpAnimation 2s ease-out forwards;
+    pointer-events: none;
+    box-shadow: 0 0 20px rgba(255, 165, 0, 0.5);
+}
+
+.sparkle {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background: white;
+    border-radius: 50%;
+    animation: sparkle 0.8s ease-out forwards;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
