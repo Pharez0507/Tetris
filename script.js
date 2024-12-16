@@ -395,81 +395,80 @@ touchDropBtn.addEventListener('click', () => hardDrop());
 // Add touch gesture handling
 let touchStartX = null;
 let touchStartY = null;
-const MIN_SWIPE = 30; // Minimum swipe distance to trigger action
+const MIN_SWIPE = 20; // Reduced minimum swipe distance
+let lastTap = 0;
 
-canvas.addEventListener('touchstart', (e) => {
-    if (gameOver || isPaused) return;
-    touchStartX = e.touches[0].clientX;
-    touchStartY = e.touches[0].clientY;
-    e.preventDefault();
-    e.stopPropagation();
-}, { passive: false });
-
-canvas.addEventListener('touchmove', (e) => {
-    if (gameOver || isPaused || touchStartX === null) return;
-    e.preventDefault();
-    e.stopPropagation();
-    
-    const touchEndX = e.touches[0].clientX;
-    const touchEndY = e.touches[0].clientY;
-    const deltaX = touchEndX - touchStartX;
-    const deltaY = touchEndY - touchStartY;
-    
-    // Only handle one direction at a time - the one with larger movement
-    if (Math.abs(deltaX) > Math.abs(deltaY)) {
-        // Horizontal swipe
-        if (Math.abs(deltaX) > MIN_SWIPE) {
-            if (deltaX > 0) {
-                move(1); // Right
-            } else {
-                move(-1); // Left
-            }
-            touchStartX = touchEndX; // Update start position for continuous movement
-        }
-    } else {
-        // Vertical swipe - only handle downward swipe
-        if (deltaY > MIN_SWIPE) {
-            drop();
-            touchStartY = touchEndY; // Update start position for continuous movement
-        }
+// Prevent scrolling when touching the canvas
+document.body.addEventListener('touchmove', function(e) {
+    if (e.target === canvas) {
+        e.preventDefault();
     }
 }, { passive: false });
 
-canvas.addEventListener('touchend', (e) => {
+// Touch start
+canvas.addEventListener('touchstart', function(e) {
+    if (gameOver || isPaused) return;
+    const touch = e.touches[0];
+    touchStartX = touch.clientX;
+    touchStartY = touch.clientY;
+    e.preventDefault();
+}, { passive: false });
+
+// Touch move
+canvas.addEventListener('touchmove', function(e) {
+    if (gameOver || isPaused || touchStartX === null) return;
+    e.preventDefault();
+    
+    const touch = e.touches[0];
+    const deltaX = touch.clientX - touchStartX;
+    const deltaY = touch.clientY - touchStartY;
+    
+    // Handle horizontal swipes
+    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > MIN_SWIPE) {
+        if (deltaX > 0) {
+            move(1); // Right
+        } else {
+            move(-1); // Left
+        }
+        // Update touch start for continuous movement
+        touchStartX = touch.clientX;
+        touchStartY = touch.clientY;
+    }
+    // Handle downward swipes
+    else if (deltaY > MIN_SWIPE) {
+        drop();
+        // Update touch start for continuous movement
+        touchStartX = touch.clientX;
+        touchStartY = touch.clientY;
+    }
+}, { passive: false });
+
+// Touch end
+canvas.addEventListener('touchend', function(e) {
     if (gameOver || isPaused) return;
     e.preventDefault();
-    e.stopPropagation();
     
-    const touchEndX = e.changedTouches[0].clientX;
-    const touchEndY = e.changedTouches[0].clientY;
+    const touch = e.changedTouches[0];
+    const deltaX = touch.clientX - touchStartX;
+    const deltaY = touch.clientY - touchStartY;
     
-    // If it was a short tap (not a swipe), rotate the piece
-    if (Math.abs(touchEndX - touchStartX) < MIN_SWIPE && 
-        Math.abs(touchEndY - touchStartY) < MIN_SWIPE) {
-        rotate(currentPiece);
+    // Handle taps for rotation
+    if (Math.abs(deltaX) < MIN_SWIPE && Math.abs(deltaY) < MIN_SWIPE) {
+        const currentTime = new Date().getTime();
+        const tapLength = currentTime - lastTap;
+        
+        if (tapLength < 300 && tapLength > 0) {
+            // Double tap - Hard drop
+            hardDrop();
+        } else {
+            // Single tap - Rotate
+            rotate(currentPiece);
+        }
+        lastTap = currentTime;
     }
     
     touchStartX = null;
     touchStartY = null;
-}, { passive: false });
-
-// Double tap for hard drop
-let lastTap = 0;
-canvas.addEventListener('touchend', (e) => {
-    if (gameOver || isPaused) return;
-    const currentTime = new Date().getTime();
-    const tapLength = currentTime - lastTap;
-    if (tapLength < 500 && tapLength > 0) {
-        hardDrop();
-        e.preventDefault();
-        e.stopPropagation();
-    }
-    lastTap = currentTime;
-}, { passive: false });
-
-// Prevent default touch behavior on the game canvas
-canvas.addEventListener('touchmove', (e) => {
-    e.preventDefault();
 }, { passive: false });
 
 // Initialize the game
