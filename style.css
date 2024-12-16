@@ -44,9 +44,9 @@ body {
     display: flex;
     gap: 20px;
     padding: 20px;
-    background-color: var(--container-bg);
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .game-info {
@@ -54,6 +54,10 @@ body {
     flex-direction: column;
     gap: 20px;
     text-align: center;
+    background-color: var(--container-bg);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
 
 .score-container {
@@ -117,10 +121,15 @@ button:hover {
         flex-direction: column;
         align-items: center;
         padding: 10px;
-        width: 100%;
-        max-width: 500px;
+        gap: 10px;
     }
     
+    .game-info {
+        width: 100%;
+        max-width: 300px;
+        padding: 10px;
+    }
+
     .pc-controls {
         display: none;
     }
@@ -128,30 +137,33 @@ button:hover {
     .mobile-controls {
         display: block;
         margin-top: 20px;
+        background-color: var(--container-bg);
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
     }
     
     #tetris {
         width: 100%;
         max-width: 300px;
         height: auto;
-        touch-action: none; /* Prevent browser default touch actions */
+        touch-action: none;
+        border: 2px solid var(--canvas-border);
     }
     
     .right-panel {
         flex-direction: column;
         align-items: center;
         width: 100%;
+        max-width: 300px;
     }
 
     .next-piece {
-        margin-bottom: 20px;
         width: 100%;
-        max-width: 300px;
-    }
-    
-    .mobile-controls {
-        width: 100%;
-        max-width: 300px;
+        background-color: var(--container-bg);
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
     }
 }
 

@@ -402,11 +402,13 @@ canvas.addEventListener('touchstart', (e) => {
     touchStartX = e.touches[0].clientX;
     touchStartY = e.touches[0].clientY;
     e.preventDefault();
-});
+    e.stopPropagation();
+}, { passive: false });
 
 canvas.addEventListener('touchmove', (e) => {
     if (gameOver || isPaused || touchStartX === null) return;
     e.preventDefault();
+    e.stopPropagation();
     
     const touchEndX = e.touches[0].clientX;
     const touchEndY = e.touches[0].clientY;
@@ -431,9 +433,13 @@ canvas.addEventListener('touchmove', (e) => {
             touchStartY = touchEndY; // Update start position for continuous movement
         }
     }
-});
+}, { passive: false });
 
 canvas.addEventListener('touchend', (e) => {
+    if (gameOver || isPaused) return;
+    e.preventDefault();
+    e.stopPropagation();
+    
     const touchEndX = e.changedTouches[0].clientX;
     const touchEndY = e.changedTouches[0].clientY;
     
@@ -445,20 +451,26 @@ canvas.addEventListener('touchend', (e) => {
     
     touchStartX = null;
     touchStartY = null;
-    e.preventDefault();
-});
+}, { passive: false });
 
 // Double tap for hard drop
 let lastTap = 0;
 canvas.addEventListener('touchend', (e) => {
+    if (gameOver || isPaused) return;
     const currentTime = new Date().getTime();
     const tapLength = currentTime - lastTap;
     if (tapLength < 500 && tapLength > 0) {
         hardDrop();
         e.preventDefault();
+        e.stopPropagation();
     }
     lastTap = currentTime;
-});
+}, { passive: false });
+
+// Prevent default touch behavior on the game canvas
+canvas.addEventListener('touchmove', (e) => {
+    e.preventDefault();
+}, { passive: false });
 
 // Initialize the game
 startGame();
